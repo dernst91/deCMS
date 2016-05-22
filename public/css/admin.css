@@ -1,0 +1,46 @@
+html {
+	height: 100%;
+}
+body {
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	font-family: Arial;
+	height: 100%;
+}
+div#loginform {
+	margin-left: auto;
+	margin-right: auto;
+	width: 320px;
+	margin-top: 40px;
+	background-color: #eee;
+	padding: 10px;
+}
+div#loginform input.field {
+	width: 100%;
+}
+div.error {
+	margin-bottom: 10px;
+	padding: 5px 5px 5px 26px;
+	background-color: #f2dede;
+	border: 1px solid #dca7a7;
+	background-image: url('../img/silk/exclamation.png');
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+}
+div#sidebar {
+	float: left;
+	width: 250px;
+	background-color: #333;
+	min-height: 100%;
+}
+div#sidebarTitle {
+	background-color: #5b5b5b;
+	border-bottom: 1px solid #3b3b3b;
+	padding: 0 10px;
+}
+
+h1.nospace {
+	margin: 0;
+	padding: 0;
+}
