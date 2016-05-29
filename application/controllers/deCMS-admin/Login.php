@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 		$this -> load -> helper(array('form', 'url'));
 		
 		// Load form validation library
-		$this -> load -> library('form_validation');
+		$this -> load -> library(array('form_validation', 'session'));
 		$this -> form_validation -> set_error_delimiters('<div class="error">', '</div>');
 		
 		// Login form submitted?

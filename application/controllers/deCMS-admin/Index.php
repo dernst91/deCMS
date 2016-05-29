@@ -8,7 +8,7 @@ class Index extends MY_AdminController {
 	public function index()
 	{
 		$this->PageTitle = 'Dashboard';
-		$this->Content = '<h1>Dashboard</h1>';
+		$this->Content = '<h1>muh</h1>';
 		$this->RenderPage();
 	}
 }

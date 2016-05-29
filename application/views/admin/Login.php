@@ -13,6 +13,7 @@
 			<?php if($loginError): ?>
 				<div class="error">Benutzername und/oder Passwort falsch!</div>
 			<?php endif; ?>
+			<?php if(isset($_SESSION['Admin_InfoBox'])) echo '<div class="info">'.$_SESSION['Admin_InfoBox'].'</div>'; ?>
 			<?php echo form_open('deCMS-admin/Login'); ?>
 				<p>Benutzername:<br /><?php echo form_input('login_user', set_value('login_user', ''), 'class="field"'); ?></p>
 				<p>Passwort:<br /><?php echo form_password('login_pass', '', 'class="field"'); ?></p>
