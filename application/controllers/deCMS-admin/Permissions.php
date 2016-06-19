@@ -11,7 +11,9 @@ class Permissions extends MY_AdminController {
 		$this->Actions = array(
 			'Index' => 'Übersicht',
 			'Create' => 'Erstellen',
-			'Edit' => 'Bearbeiten'
+			'Edit' => 'Bearbeiten',
+			'Manage' => 'Verwalten',
+			'Delete' => 'Löschen'
 		);
 	}
 	
@@ -106,21 +108,27 @@ class Permissions extends MY_AdminController {
 			$_guid = trim($GUID);
 			$insertData = array();
 			// Form was sent! Validate permissions and generate permission array
-			foreach($_POST['permissions'] as $_perm)
-			{
-				if(!isset($validPermissions[$_perm])) continue;
-				$insertData[] = array(
-					'PermissionType' => $PermissionType,
-					'GUID' => $_guid,
-					'AID' => $validPermissions[$_perm]['AID']
-				);
-			}
-			
 			// Delete old permissions
 			$this->db->delete('admin_permission', array('PermissionType' => $PermissionType, 'GUID' => $_guid));
+			if(isset($_POST['permissions']))
+			{
+				foreach($_POST['permissions'] as $_perm)
+				{
+					if(!isset($validPermissions[$_perm])) continue;
+					$insertData[] = array(
+						'PermissionType' => $PermissionType,
+						'GUID' => $_guid,
+						'AID' => $validPermissions[$_perm]['AID']
+					);
+				}
+				
+				// Insert new permissions
+				$this->db->insert_batch('admin_permission', $insertData);
+			}
 			
-			// Insert new permissions
-			$this->db->insert_batch('admin_permission', $insertData);
+			// Set success message
+			$this->session->set_flashdata('boxType', 'info');
+			$this->session->set_flashdata('boxMessage', 'Die neuen Berechtigungen wurden gespeichert und der Berechtigungs-Cache für <b>'.$_SESSION['Admin_Username'].'</b> aktualisiert.');
 			
 			// Clear permission cache
 			unset($_SESSION['Admin_UserPermission']);
