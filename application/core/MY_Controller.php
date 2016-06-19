@@ -44,7 +44,7 @@ class MY_AdminController extends CI_Controller {
 		// Check for permissions
 		$this->CurrentModule = $this->router->fetch_class();
 		$this->CurrentAction = $this->router->fetch_method();
-		if(!$this->HavePermission($this->CurrentModule, $this->CurrentAction))
+		if(!$this->HavePermission($this->CurrentModule, $this->CurrentAction) && $this->CurrentModule != 'Logout')
 		{
 			// No permission, show error page
 			$this->PageTitle = 'Fehler';
