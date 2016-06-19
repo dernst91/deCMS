@@ -33,13 +33,13 @@ class MY_AdminController extends CI_Controller {
 		$this -> load -> database();
 		
 		// Check if permissions are cached
-		//if(!isset($_SESSION['Admin_UserPermission']))
-		//{
+		if(!isset($_SESSION['Admin_UserPermission']))
+		{
 			// Rebuild permission cache
 			$this->RebuildPermissionCache();
 			// Rebuild sidebar cache
 			$this->RebuildSidebarCache();
-		//}
+		}
 		
 		// Check for permissions
 		$this->CurrentModule = $this->router->fetch_class();
@@ -53,6 +53,16 @@ class MY_AdminController extends CI_Controller {
 			$this->output->_display();
 			die;
 		}
+	}
+	
+	protected function admin_url($url = '')
+	{
+		return $this->adminBaseURL.'/'.$url;
+	}
+	
+	protected function module_url($url = '')
+	{
+		return $this->adminBaseURL.'/'.$this->CurrentModule.'/'.$url;
 	}
 	
 	protected function RenderPage()

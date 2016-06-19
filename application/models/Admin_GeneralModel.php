@@ -23,5 +23,18 @@ class Admin_GeneralModel extends CI_Model {
 		else
 			return FALSE;
 	}
+	
+	public function GetAdminModuleActions($MID = NULL)
+	{
+		$this->db->select('AID, MID, Action');
+		$this->db->from('admin_module_action');
+		if($MID != NULL)
+			$this->db->where('MID', $MID);
+		$query = $this->db->get();
+		if($query->num_rows())
+			return $query->result();
+		else
+			return FALSE;
+	}
 }
 ?>

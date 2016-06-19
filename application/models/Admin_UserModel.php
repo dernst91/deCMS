@@ -7,5 +7,15 @@ class Admin_UserModel extends CI_Model {
 		$query = $this->db->get();
 		return $query->result();
 	}
+	
+	public function GetUserData($UID)
+	{
+		$this->db->select('UID, Username, FirstName, LastName, EMail, Active, LastLogin');
+		$this->db->from('admin_user');
+		$this->db->where('UID', $UID);
+		$query = $this->db->get();
+		if($query->num_rows() == 0) return FALSE;
+		return $query->row();
+	}
 }
 ?>

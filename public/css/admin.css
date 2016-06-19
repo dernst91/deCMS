@@ -83,3 +83,26 @@ div#mainTitle span {
 div#content {
 	padding: 10px;
 }
+
+label.cbLine {
+	padding-right: 40px;
+}
+
+table.colored tr:first-child {
+	background-color: #cecece;
+	font-weight: bold;
+}
+table.colored tr:nth-child(2n+3) {
+	background-color: #f3f3f3;
+}
+div.buttonBar {
+	padding-top: 40px;
+}
+div.buttonBar a {
+	margin-right: 10px;
+	padding: 2px;
+	border: 1px solid #b5b5b5;
+	text-decoration: none;
+	background-color: #dedede;
+	color: black;
+}
