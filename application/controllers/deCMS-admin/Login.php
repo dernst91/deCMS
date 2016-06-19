@@ -53,6 +53,11 @@ class Login extends CI_Controller {
 						);
 						$this -> session -> set_userdata($newSessionData);
 						
+						// Update database last login
+						$this->db->set('LastLogin', date('Y-m-d H:i:s'));
+						$this->db->where('UID', $userdata->UID);
+						$this->db->update('admin_user');
+						
 						// Now redirect to admin dashboard
 						redirect('deCMS-admin');
 					}

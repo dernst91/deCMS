@@ -3,6 +3,8 @@ class MY_AdminController extends CI_Controller {
 	protected $adminBaseURL;
 	protected $PageTitle;
 	protected $Content;
+	protected $CurrentModule;
+	protected $CurrentAction;
 	
 	public function __construct()
 	{
@@ -31,12 +33,25 @@ class MY_AdminController extends CI_Controller {
 		$this -> load -> database();
 		
 		// Check if permissions are cached
-		if(!isset($_SESSION['Admin_UserPermission']))
-		{
+		//if(!isset($_SESSION['Admin_UserPermission']))
+		//{
 			// Rebuild permission cache
 			$this->RebuildPermissionCache();
 			// Rebuild sidebar cache
 			$this->RebuildSidebarCache();
+		//}
+		
+		// Check for permissions
+		$this->CurrentModule = $this->router->fetch_class();
+		$this->CurrentAction = $this->router->fetch_method();
+		if(!$this->HavePermission($this->CurrentModule, $this->CurrentAction))
+		{
+			// No permission, show error page
+			$this->PageTitle = 'Fehler';
+			$this->Content = $this->load->view('admin/Error_NoPermission', NULL, TRUE);
+			$this->RenderPage();
+			$this->output->_display();
+			die;
 		}
 	}
 	
@@ -49,9 +64,18 @@ class MY_AdminController extends CI_Controller {
 		$this -> load -> view('admin/BackendTheme.php', $PageData);
 	}
 	
+	protected function HavePermission($Module, $Action)
+	{
+		return in_array(strtolower($Module).'/'.strtolower($Action), $_SESSION['Admin_UserPermission']);
+	}
+	
 	private function RebuildPermissionCache()
 	{
+		// Request permissions from database
+		$this->load->model('Admin_PermissionModel');
 		
+		// Cache user permissions
+		$_SESSION['Admin_UserPermission'] = $this->Admin_PermissionModel->GetUserPermissions($_SESSION['Admin_UID']);
 	}
 	
 	private function RebuildSidebarCache()
@@ -76,6 +100,9 @@ class MY_AdminController extends CI_Controller {
 			// Check if category exists
 			if(!isset($sbArray[$row->CID]['Label'])) continue;
 			
+			// Check if user has permission to use module
+			if(!$this->HavePermission($row->ModuleName, 'Index')) continue;
+			
 			// Append module to categories' list
 			$sbArray[$row->CID]['Entries'][] = array('MID' => $row->MID, 'ModuleName' => $row->ModuleName, 'DisplayName' => $row->DisplayName);
 		}
@@ -93,7 +120,7 @@ class MY_AdminController extends CI_Controller {
 			// Modules
 			foreach($sbArray[$cid]['Entries'] as $_Module)
 			{
-				$sbCache .= '<a href="#"><img src="'.site_url('img/admin/module/'.$_Module['ModuleName'].'.png').'" alt="" border="0" />&nbsp;'.$_Module['DisplayName'].'</a><br />';
+				$sbCache .= '<a href="'.$this->adminBaseURL.'/'.$_Module['ModuleName'].'"><img src="'.site_url('img/admin/module/'.$_Module['ModuleName'].'.png').'" alt="" border="0" />&nbsp;'.$_Module['DisplayName'].'</a><br />';
 			}
 		}
 		
