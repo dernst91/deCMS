@@ -13,7 +13,8 @@ class Permissions extends MY_AdminController {
 			'Create' => 'Erstellen',
 			'Edit' => 'Bearbeiten',
 			'Manage' => 'Verwalten',
-			'Delete' => 'Löschen'
+			'Delete' => 'Löschen',
+			'Move' => 'Verschieben'
 		);
 	}
 	
